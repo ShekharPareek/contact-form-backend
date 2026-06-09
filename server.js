@@ -65,7 +65,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+
+const apiKey = process.env.RESEND_API_KEY;
+
+console.log("API KEY EXISTS:", !!apiKey);
+
+const resend = new Resend(apiKey);
+// const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.post("/contact", async (req, res) => {
   try {
