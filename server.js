@@ -75,6 +75,17 @@ const resend = new Resend(apiKey);
 
 app.post("/contact", async (req, res) => {
   try {
+    const apiKey = process.env.RESEND_API_KEY;
+
+    if (!apiKey) {
+      return res.status(500).json({
+        success: false,
+        message: "Missing RESEND_API_KEY in environment"
+      });
+    }
+
+    const resend = new Resend(apiKey);
+
     const { name, email, service, message } = req.body;
 
     const data = await resend.emails.send({
@@ -82,27 +93,17 @@ app.post("/contact", async (req, res) => {
       to: "manvipareek2003@gmail.com",
       replyTo: email,
       subject: `New Contact Form: ${service}`,
-      html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Service:</strong> ${service}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message}</p>
-      `
+      html: `<p>${message}</p>`
     });
 
-    res.status(200).json({
-      success: true,
-      message: "Email sent successfully",
-      data
-    });
-  } catch (error) {
-    console.error(error);
+    res.json({ success: true, data });
+
+  } catch (err) {
+    console.error(err);
 
     res.status(500).json({
       success: false,
-      message: "Failed to send email"
+      message: err.message
     });
   }
 });
