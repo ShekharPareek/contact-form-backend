@@ -88,13 +88,21 @@ app.post("/contact", async (req, res) => {
 
     const { name, email, service, message } = req.body;
 
-    const data = await resend.emails.send({
-      from: "onboarding@resend.dev",
-      to: "manvipareek2003@gmail.com",
-      replyTo: email,
-      subject: `New Contact Form: ${service}`,
-      html: `<p>${message}</p>`
-    });
+const data = await resend.emails.send({
+  from: "Line to Line <noreply@linetolineart.com>",  // your verified domain
+  to: "linetolineartllp@gmail.com",
+  cc: ["pradeep@example.com", "manager@example.com"], // whoever should be copied
+  replyTo: email,                                      // visitor's email
+  subject: `New Contact Form: ${service}`,
+  html: `
+    <h2>New Contact Enquiry</h2>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Service:</strong> ${service}</p>
+    <p><strong>Message:</strong></p>
+    <p>${message}</p>
+  `
+});
 
     res.json({ success: true, data });
 
