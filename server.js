@@ -91,7 +91,7 @@ app.post("/contact", async (req, res) => {
 const data = await resend.emails.send({
   from: "Line to Line <noreply@linetolineart.com>",  // your verified domain
   to: "linetolineartllp@gmail.com",
-  cc: ["pradeep@example.com", "manager@example.com"], // whoever should be copied
+  // cc: ["pradeep@example.com", "manager@example.com"], // whoever should be copied
   replyTo: email,                                      // visitor's email
   subject: `New Contact Form: ${service}`,
   html: `
